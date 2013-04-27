@@ -5,4 +5,4 @@ Provides [Jenkins](http://jenkins-ci.org/) integration with [Composer](http://ge
 
 This project is NOT stable. DO NOT USE IN PRODUCTION!
 
-[Help us get this done!](https://github.com/renanbr/composer-plugin/issues)
+[Help us get things done!](https://github.com/renanbr/composer-plugin/issues)
