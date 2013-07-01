@@ -1,19 +1,22 @@
 package org.jenkinsci.plugins.composerplugin;
-import hudson.Launcher;
 import hudson.Extension;
-import hudson.util.FormValidation;
-import hudson.model.AbstractBuild;
+import hudson.Launcher;
 import hudson.model.BuildListener;
+import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
-import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
-import net.sf.json.JSONObject;
-import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.QueryParameter;
+import hudson.tasks.Builder;
+import hudson.util.FormValidation;
+
+import java.io.IOException;
 
 import javax.servlet.ServletException;
-import java.io.IOException;
+
+import net.sf.json.JSONObject;
+
+import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
 
 /**
  * Sample {@link Builder}.
@@ -55,10 +58,17 @@ public class ComposerBuilder extends Builder {
         // Since this is a dummy, we just say 'hello world' and call that a build.
 
         // This also shows how you can consult the global configuration of the builder
-        if (getDescriptor().getUseFrench())
-            listener.getLogger().println("Bonjour, "+name+"!");
+        if (getDescriptor().getAwaysUpdateComposer())
+            listener.getLogger().println("Aways update Composer on build, "+name+"!");
         else
-            listener.getLogger().println("Hello, "+name+"!");
+            listener.getLogger().println("Only build job, "+name+"!");
+        
+        
+        if (getDescriptor().getAwaysUpdateProject())
+            listener.getLogger().println("Aways update Composer on build, "+name+"!");
+        else
+            listener.getLogger().println("Only build job, "+name+"!");
+
         return true;
     }
 
@@ -87,7 +97,9 @@ public class ComposerBuilder extends Builder {
          * <p>
          * If you don't want fields to be persisted, use <tt>transient</tt>.
          */
-        private boolean useFrench;
+        private boolean awaysUpdateComposer;
+        
+        private boolean awaysUpdateProject;
 
         /**
          * Performs on-the-fly validation of the form field 'name'.
@@ -107,7 +119,8 @@ public class ComposerBuilder extends Builder {
         }
 
         public boolean isApplicable(Class<? extends AbstractProject> aClass) {
-            // Indicates that this builder can be used with all kinds of project types 
+            // Indicates that this builder can be used with all kinds of project types
+        	
             return true;
         }
 
@@ -122,7 +135,9 @@ public class ComposerBuilder extends Builder {
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
             // To persist global configuration information,
             // set that to properties and call save().
-            useFrench = formData.getBoolean("useFrench");
+            awaysUpdateComposer = formData.getBoolean("awaysUpdateComposer");
+            
+            awaysUpdateProject = formData.getBoolean("awaysUpdateProject");
             // ^Can also use req.bindJSON(this, formData);
             //  (easier when there are many fields; need set* methods for this, like setUseFrench)
             save();
@@ -135,9 +150,19 @@ public class ComposerBuilder extends Builder {
          * The method name is bit awkward because global.jelly calls this method to determine
          * the initial state of the checkbox by the naming convention.
          */
-        public boolean getUseFrench() {
-            return useFrench;
+        public boolean getAwaysUpdateComposer() {
+            return awaysUpdateComposer;
         }
+
+		public boolean getAwaysUpdateProject() {
+			return awaysUpdateProject;
+		}
+
+		public void setAwaysUpdateProject(boolean awaysUpdateProject) {
+			this.awaysUpdateProject = awaysUpdateProject;
+		}
     }
+    
+    
 }
 
