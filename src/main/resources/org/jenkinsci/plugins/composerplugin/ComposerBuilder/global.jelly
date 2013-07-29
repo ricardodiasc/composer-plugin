@@ -12,13 +12,8 @@
     so it should be straightforward to find them.
   -->
   <f:section title="Composer Plugin">
-    <f:entry title="Aways update composer" field="awaysUpdateComposer"
-      description="Check if we should aways update composer">
-      <f:checkbox />
-    </f:entry>
-    <f:entry title="Aways update project" field="awaysUpdateProject"
-      description="Check if we should aways update project dependencies">
-      <f:checkbox />
+    <f:entry title="Add Installer" field="Add a installer of composer" description="Add a instalation of composer">
+      <f:button />
     </f:entry>
   </f:section>
   
